@@ -1,14 +1,72 @@
 <% layout('layouts/boilerplate') %>
-        <h1>Update Campground</h1>
-        <form action="/campgrounds/<%= campground._id%>?_method=PUT" method="POST">
-            <div>
-                <label for="title">Title</label>
-                <input type="text" id="title" name="campground[title]" value="<%= campground.title %>">
+        <div class="row">
+            <h1 class="text-center">Update Campground</h1>
+            <div class="col-6 offset-3">
+                <form action="/campgrounds/<%= campground._id%>?_method=PUT" method="POST" novalidate class="validated-form">
+                    <div class="mb-3">
+                        <label for="title" class="form-label">Title</label>
+                        <input type="text" class="form-control" id="title" name="campground[title]" placeholder="<%= campground.title %>" required>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" name="campground[location]" placeholder="<%= campground.location %>" required>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="image" class="form-label">Image Url</label>
+                        <input type="text" class="form-control" id="image" name="campground[image]" placeholder="<%= campground.image %>" required>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="input-group">
+                            <span class="input-group-text" id="basic-addon1">$</span>
+                            <input type="text" class="form-control" placeholder="<%= campground.price %>" 
+                            aria-label="price" aria-describedby="price-label" name="campground[price]" required>
+                            <div class="valid-feedback">
+                                Looks Good!
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="description" class="form-label">Description</label>
+                        <textarea class="form-control" type="text" id="description" name="campground[description]" placeholder="<%= campground.description %>" required></textarea>
+                        <div class="valid-feedback">
+                            Looks Good!
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <button class="btn btn-success">Update Campground</button>
+                    </div>
+                </form>
             </div>
-            <div>
-                <label for="location">Location</label>
-                <input type="text" id="location" name="campground[location]" value="<%= campground.location %>">
-            </div>
-            <button>Add Campground</button>
-        </form>
-        <a href="/campgrounds/<%= campground._id %>">Back To Campground</a>
+        </div>
+       
+        <script>
+            (function () {
+                'use strict'
+    
+                // Fetch all the forms we want to apply custom Bootstrap validation styles to
+                const forms = document.querySelectorAll('.validated-form')
+    
+                // Loop over them and prevent submission
+                // older way: Array.prototype.slice.call
+                // new way below
+                Array.from(forms).forEach(function (form) {
+                    form.addEventListener('submit', function (event) {
+                    if (!form.checkValidity()) {
+                        event.preventDefault()
+                        event.stopPropagation()
+                    }
+    
+                    form.classList.add('was-validated')
+                }, false)
+                })
+            })()
+        </script>
