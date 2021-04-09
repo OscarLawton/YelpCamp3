@@ -5,21 +5,21 @@
                 <form action="/campgrounds/<%= campground._id%>?_method=PUT" method="POST" novalidate class="validated-form">
                     <div class="mb-3">
                         <label for="title" class="form-label">Title</label>
-                        <input type="text" class="form-control" id="title" name="campground[title]" placeholder="<%= campground.title %>" required>
+                        <input type="text" class="form-control" id="title" name="campground[title]" value="<%= campground.title %>" required>
                         <div class="valid-feedback">
                             Looks Good!
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="location" class="form-label">Location</label>
-                        <input type="text" class="form-control" id="location" name="campground[location]" placeholder="<%= campground.location %>" required>
+                        <input type="text" class="form-control" id="location" name="campground[location]" value="<%= campground.location %>" required>
                         <div class="valid-feedback">
                             Looks Good!
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="image" class="form-label">Image Url</label>
-                        <input type="text" class="form-control" id="image" name="campground[image]" placeholder="<%= campground.image %>" required>
+                        <input type="text" class="form-control" id="image" name="campground[image]" value="<%= campground.image %>" required>
                         <div class="valid-feedback">
                             Looks Good!
                         </div>
@@ -27,7 +27,7 @@
                     <div class="mb-3">
                         <div class="input-group">
                             <span class="input-group-text" id="basic-addon1">$</span>
-                            <input type="text" class="form-control" placeholder="<%= campground.price %>" 
+                            <input type="text" class="form-control" value="<%= campground.price %>" 
                             aria-label="price" aria-describedby="price-label" name="campground[price]" required>
                             <div class="valid-feedback">
                                 Looks Good!
@@ -36,7 +36,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="description" class="form-label">Description</label>
-                        <textarea class="form-control" type="text" id="description" name="campground[description]" placeholder="<%= campground.description %>" required></textarea>
+                        <textarea class="form-control" type="text" id="description" name="campground[description]" value="<%= campground.description %>" required></textarea>
                         <div class="valid-feedback">
                             Looks Good!
                         </div>
