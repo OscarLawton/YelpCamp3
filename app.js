@@ -45,8 +45,10 @@ const validateCampground = (req, res, next) => {
 }
 
 const validateReview = (req, res, next) => {
+    
     const {error} = reviewSchema.validate(req.body)
     if(error){
+        
         const msg = error.details.map(el => el.message).join(',')
         throw new ExpressError(msg, 400)
     } else {
@@ -76,7 +78,8 @@ app.get('/campgrounds', catchAsync(async (req, res) =>{
 }))
 
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
-    const campground = await Campground.findById(req.params.id)
+    const campground = await Campground.findById(req.params.id).populate('reviews')
+    console.log(campground)
     res.render('campgrounds/show', {campground})
 }))
 
