@@ -51,6 +51,7 @@ router.get('/:id/edit', catchAsync(async (req, res) => {
 router.put('/:id', validateCampground, catchAsync(async (req, res) => {
     const campground = await Campground.findByIdAndUpdate(req.params.id, req.body.campground)
     await campground.save()
+    req.flash('success', 'Successfully updated campground')
     res.redirect('/campgrounds/' + campground._id)
 }))
 
@@ -58,7 +59,7 @@ router.delete('/:id', catchAsync(async (req, res) => {
     console.log('DId this delte route run??')
     const { id } = req.params
     await Campground.findByIdAndDelete(id)
-    
+    req.flash('success', 'Successfully deleted campground')
     res.redirect('/campgrounds')
 }))
 
