@@ -1,4 +1,5 @@
 const Campground = require('../models/Campground')
+const { cloudinary } = require("../cloudinary");
 
 module.exports.index = async (req, res) =>{
     const campgrounds = await Campground.find({})
@@ -14,7 +15,6 @@ module.exports.createNewCamp = async (req, res, next) => {
     campground.images = req.files.map(f => ({url: f.path, filename: f.filename}))
     campground.author = req.user._id;
     await campground.save()
-    console.log(campground)
     req.flash('success','Successfully made a new campground')
     res.redirect('/campgrounds/' + campground._id)
 }
@@ -26,7 +26,6 @@ module.exports.getCampground = async (req, res) => {
             path: 'author'
         }
     }).populate('author')
-    console.log(campground)
     if(!campground){
         req.flash('error', 'Cannot find that campground!')
         return res.redirect('/campgrounds')
@@ -36,21 +35,25 @@ module.exports.getCampground = async (req, res) => {
 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
-    const campground = Campground.findById(id)
+    const campground = await Campground.findById(id)
     if(!campground){
         req.flash('error', 'Cannot find that campground')
         return res.redirect(`/campgrounds`)
     }
+    
     res.render('campgrounds/edit', {campground})
 }
 
 module.exports.updateCampground = async (req, res) => {
+    console.log('did I even hit this route???')
     const {id} = req.params
-    
-    const campground = await Campground.findByIdAndUpdate(req.params.id, req.body.campground)
+    const campground = await Campground.findByIdAndUpdate(id, {...req.body.campground})
+    const imgs = req.files.map(f => ({url: f.path, filename: f.filename}))
+    //campground.images.push(req.files.map(f => ({url: f.path, filename: f.filename})))
+    campground.images.push(...imgs)
     await campground.save()
     req.flash('success', 'Successfully updated campground')
-    res.redirect('/campgrounds/' + campground._id)
+    res.redirect(`/campgrounds/${campground._id}`)
 }
 
 module.exports.deleteCampground = async (req, res) => {

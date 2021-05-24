@@ -4,7 +4,7 @@ const Campground = require('./models/Campground')
 const Review = require('./models/review')
 
 module.exports.isLoggedIn = (req, res, next) => {
-    console.log('Rea.user....', req.user )
+  
     if(!req.isAuthenticated()){
         req.session.returnTo = req.originalUrl
         req.flash('error', 'you must be signed in')
