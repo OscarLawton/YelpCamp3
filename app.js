@@ -13,10 +13,10 @@ const express_Session = require('express-session')
 const passport = require('passport')
 const LocalStrategy = require('passport-local')
 const User = require('./models/user')
-
 const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
+const mognoSanitize = require('express-mongo-sanitize')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -42,6 +42,7 @@ app.use(methodOverride('_method'))
  
 
 app.use(express.static(path.join(__dirname, 'public')))
+app.use(mognoSanitize())
 
 const sessionConfig = {
     secret: 'thisshouldbeabettersecret!',
