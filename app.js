@@ -17,6 +17,7 @@ const campgroundRoutes = require('./routes/campgrounds')
 const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
 const mognoSanitize = require('express-mongo-sanitize')
+const helmet = require('helmet')
 
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
@@ -59,6 +60,7 @@ const sessionConfig = {
 
 app.use(express_Session(sessionConfig))
 app.use(flash())
+app.use(helmet({contentSecurityPolicy: false}))
 
 
 app.use(passport.initialize())
