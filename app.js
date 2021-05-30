@@ -45,6 +45,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use(mognoSanitize())
 
 const sessionConfig = {
+    name: 'session',
     secret: 'thisshouldbeabettersecret!',
     resave: false,
     saveUninitialized: true,
