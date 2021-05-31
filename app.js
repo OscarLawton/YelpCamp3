@@ -18,7 +18,8 @@ const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
 const mognoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
-
+//const dbUrl = process.env.DB_URL
+//mongodb://localhost:27017/yelp-camp
 mongoose.connect('mongodb://localhost:27017/yelp-camp', {
     useNewUrlParser: true,
     useCreateIndex: true,
@@ -144,7 +145,7 @@ app.all('*', (req, res, next) => {
 app.use((err, req, res, next) => {
     const { statusCode = 500 } = err
     if(!err.message) err.message = 'Oh no, something went wrong'
-    res.status(statusCode).render('error', { err })
+    res.status(statusCode).render('error', { err, process})
 })
 
 app.listen(3000, ()=> {
