@@ -18,9 +18,12 @@ const reviewRoutes = require('./routes/reviews')
 const userRoutes = require('./routes/users')
 const mognoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
+const MongoStore = require("connect-mongo");
+//(express_Session);
 //const dbUrl = process.env.DB_URL
+const dbUrl = 'mongodb://localhost:27017/yelp-camp'
 //mongodb://localhost:27017/yelp-camp
-mongoose.connect('mongodb://localhost:27017/yelp-camp', {
+mongoose.connect(dbUrl, {
     useNewUrlParser: true,
     useCreateIndex: true,
     useUnifiedTopology: true,
@@ -41,14 +44,41 @@ app.set('views', path.join(__dirname, 'views'))
 
 app.use(express.urlencoded({extended: true}))
 app.use(methodOverride('_method'))
- 
 
 app.use(express.static(path.join(__dirname, 'public')))
-app.use(mognoSanitize())
+
+app.use(mognoSanitize({
+    replaceWith: '_'
+}))
+/* 
+const store = new MongoStore({
+    url: dbUrl,
+    secret: 'thisshouldbeabettersecret',
+    touchAfter: 24 * 60 * 60 
+})  
+ */
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'squirrel'
+    }
+})
+
+ store.on('error', function(e){
+    console.log('session store error', e)
+}) 
 
 const sessionConfig = {
+   /*  store: MongoDBStore.create({
+        mongoUrl: dbUrl,
+        secret: 'thisshouldbeabettersecret',
+        touchAfter: 24 * 60 * 60
+    }), */
+    store,
     name: 'session',
-    secret: 'thisshouldbeabettersecret!',
+    secret: 'thisshouldbeabettersecret',
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -58,10 +88,10 @@ const sessionConfig = {
     }
 }
 
-
 app.use(express_Session(sessionConfig))
 app.use(flash())
 app.use(helmet())
+
 const scriptSrcUrls = [
     "https://stackpath.bootstrapcdn.com/",
     
@@ -86,7 +116,9 @@ const connectSrcUrls = [
     "https://b.tiles.mapbox.com/",
     "https://events.mapbox.com/",
 ];
+
 const fontSrcUrls = [];
+
 app.use(
     helmet.contentSecurityPolicy({
         directives: {
